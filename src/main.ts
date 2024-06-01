@@ -1,6 +1,7 @@
 import { Client, IntentsBitField } from 'discord.js';
-import { CommandKit } from 'commandkit'
+import { CommandKit } from 'commandkit';
 import path from 'path';
+import * as express from 'express';
 
 const client = new Client({
 	intents: [
@@ -10,7 +11,7 @@ const client = new Client({
 		IntentsBitField.Flags.MessageContent,
 		IntentsBitField.Flags.DirectMessages,
 	],
-})
+});
 
 new CommandKit({
 	client,
@@ -22,4 +23,9 @@ new CommandKit({
 	validationsPath: path.join(__dirname, 'validations'),
 });
 
-client.login(Bun.env.DISCORD_TOKEN as string);
+const app = express();
+
+app.listen(3000, () => {
+	console.log('Server is running on port 3000');
+	client.login(Bun.env.DISCORD_TOKEN as string);
+});
