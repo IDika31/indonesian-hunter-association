@@ -4,6 +4,7 @@ import level from '../../database/level.json';
 import roleRequirement, { roleId } from '../../utils/roleRequirement';
 import numeral from 'numeral';
 import fs from 'fs';
+import type { Level } from '../../utils/interfaces';
 
 export const data = new SlashCommandBuilder()
 	.setName('honor')
@@ -20,10 +21,10 @@ export async function run({ interaction, client }: SlashCommandProps) {
 
 	const user = interaction.options.getUser('user') ?? interaction.user;
 
-	if (!level[user.id as keyof typeof level]) {
-		level[user.id as keyof typeof level] = {
+	if (!(level as Level)[user.id]) {
+		(level as Level)[user.id] = {
 			xp: 0,
-		} as never;
+		};
 
 		fs.writeFileSync(
 			'./database/level.json',
@@ -40,7 +41,7 @@ export async function run({ interaction, client }: SlashCommandProps) {
 
 	return interaction.reply(
 		`**<@${user.id}>** need **${numeral(
-			level[user.id as keyof typeof level].xp as never
+			(level as Level)[user.id].xp as never
 		).format()} / ${numeral(
 			roleRequirement[roles[0] as keyof typeof roleRequirement]
 				.requirementToNextRole

@@ -5,21 +5,7 @@ import mission from '../../database/mission.json';
 import level from '../../database/level.json';
 import honorPoint from '../../utils/honorPoint';
 import fs from 'fs';
-
-interface Mission {
-	[date: string]: {
-		[id: string]: {
-			missionRank: string;
-			missionCreator: string;
-			missionDescription: string;
-			missionLeader: string;
-			missionMember: string[];
-			missionHoP: number;
-			createdAt: string;
-			finish: boolean;
-		};
-	};
-}
+import type { Mission, Level } from '../../utils/interfaces';
 
 const uid = new randomId();
 const date = new Date()
@@ -116,6 +102,12 @@ export const data = new SlashCommandBuilder()
 						{ name: 'Unfinish', value: 'unfinish' },
 					])
 			)
+			.addIntegerOption((option) =>
+				option
+					.setName('page')
+					.setDescription('The page of the mission')
+					.setRequired(false)
+			)
 	);
 
 export async function run({ interaction }: SlashCommandProps) {
@@ -194,13 +186,13 @@ export async function run({ interaction }: SlashCommandProps) {
 		member
 			.map((m) => m.replace(/<@|>/g, ''))
 			.forEach(async (m) => {
-				if (!level[m as keyof typeof level]) {
-					level[m as keyof typeof level] = {
+				if (!(level as Level)[m]) {
+					(level as Level)[m] = {
 						xp: 0,
 					} as never;
 				}
 
-				level[m as keyof typeof level].xp += missionData.missionHoP as never;
+				(level as Level)[m].xp += missionData.missionHoP;
 			});
 
 		(mission as unknown as Mission)[date][id].finish = true;
@@ -243,14 +235,28 @@ ${member.join(' | ')}`
 **Leader:** ${missionData.missionLeader}
 **Member:** ${missionData.missionMember.join(' | ')}
 `;
-			})
-			.join('\n');
+			});
+
+			// Setting pagination 5/page
+			const page = interaction.options.getInteger('page') ?? 1;
+			const start = (page - 1) * 5;
+			const end = start + 5;
+
+			const missionListPage = missionList.slice(start, end);
+
+			if (!missionListPage[0]) {
+				return await interaction.reply(
+					`Tidak ada misi yang ${
+						finish == 'finish' ? 'Selesai' : 'Belum Selesai'
+					} pada halaman **${page}**!`
+				);
+			}
 
 		return await interaction.reply(`**Daftar Misi yang ${
 			finish == 'finish' ? 'Selesai' : 'Belum Selesai'
 		}:**
 
-${missionList}`);
+${missionListPage.join('\n') || 'Tidak ada misi!'}`);
 	}
 }
 
