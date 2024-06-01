@@ -25,7 +25,7 @@ new CommandKit({
 
 const app = express();
 
-app.listen(3000, () => {
-	console.log('Server is running on port 3000');
+app.listen(Bun.env.PORT, () => {
+	console.log(`Server is running on port ${Bun.env.PORT}`);
 	client.login(Bun.env.DISCORD_TOKEN as string);
 });
