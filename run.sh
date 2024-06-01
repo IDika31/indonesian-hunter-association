@@ -46,5 +46,5 @@ start "Installing Dependencies"
 finished
 
 start "building the app"
-  bun . -p 3000
+  bun .
 finished
