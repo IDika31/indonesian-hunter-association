@@ -1,0 +1,129 @@
+{
+	"01-06-2024": {
+		"8KHYAR": {
+			"missionRank": "D",
+			"missionCreator": "<@511750157822328842>",
+			"missionDescription": "8 shadow fang cat",
+			"missionLeader": "<@1235867283893518393>",
+			"missionMember": [
+				"<@916342258050162758>",
+				"<@1236959598913781870>",
+				"<@1245956950433468439>",
+				"<@1245825912025518167>",
+				"<@1235867283893518393>"
+			],
+			"missionHoP": 67,
+			"createdAt": "Sat Jun 01 2024",
+			"finish": true
+		},
+		"03GWJ9": {
+			"missionRank": "C",
+			"missionCreator": "<@511750157822328842>",
+			"missionDescription": "mengalahkan koloni buzzspwan",
+			"missionLeader": "<@753923033898549359>",
+			"missionMember": [
+				"<@616217395429638155>",
+				"<@895955073153261578>",
+				"<@1059776887750152265>",
+				"<@610457188045029416>",
+				"<@995982025825718382>",
+				"<@753923033898549359>",
+				"<@753923033898549359>"
+			],
+			"missionHoP": 126,
+			"createdAt": "Sat Jun 01 2024",
+			"finish": true
+		},
+		"JTMYB4": {
+			"missionRank": "B",
+			"missionCreator": "<@511750157822328842>",
+			"missionDescription": "Megaprimatus Rank B",
+			"missionLeader": "<@1242844197589876820>",
+			"missionMember": [
+				"<@468797235740540928>",
+				"<@733715538638798848>",
+				"<@1246070428120911894>",
+				"<@726997671146946611>",
+				"<@1242844197589876820>"
+			],
+			"missionHoP": 340,
+			"createdAt": "Sat Jun 01 2024",
+			"finish": true
+		},
+		"ZPZLXD": {
+			"missionRank": "D",
+			"missionCreator": "<@511750157822328842>",
+			"missionDescription": "Bramble Ghost Rank D",
+			"missionLeader": "<@755653927613104198>",
+			"missionMember": [
+				"<@1059776887750152265>",
+				"<@566979593135718402>",
+				"<@468678995576225792>",
+				"<@755653927613104198>"
+			],
+			"missionHoP": 84,
+			"createdAt": "Sat Jun 01 2024",
+			"finish": true
+		},
+		"J2HTQG": {
+			"missionRank": "B",
+			"missionCreator": "<@511750157822328842>",
+			"missionDescription": "Orphan lark B",
+			"missionLeader": "<@1229752679845204112>",
+			"missionMember": [
+				"<@1064561100571541554>",
+				"<@763624940544327691>",
+				"<@396285459317260291>",
+				"<@1229752679845204112>"
+			],
+			"missionHoP": 426,
+			"createdAt": "2024-06-01T04:04:30.048Z",
+			"finish": true
+		},
+		"LEUH9R": {
+			"missionRank": "C",
+			"missionCreator": "<@511750157822328842>",
+			"missionDescription": "hydrakaras",
+			"missionLeader": "<@1125968311809753188>",
+			"missionMember": [
+				"<@735828166639353906>",
+				"<@1055391322669858836>",
+				"<@1082954118416564224>",
+				"<@1114700812233490566>",
+				"<@457525511682392067>",
+				"<@1125968311809753188>"
+			],
+			"missionHoP": 126,
+			"createdAt": "2024-06-01T04:09:00.406Z",
+			"finish": true
+		},
+		"EURFEU": {
+			"missionRank": "E+",
+			"missionCreator": "<@511750157822328842>",
+			"missionDescription": "misi laba laba",
+			"missionLeader": "<@912330764882964530>",
+			"missionMember": [
+				"<@684041281336377370>",
+				"<@881606530976329758>",
+				"<@764744427825922049>",
+				"<@912330764882964530>"
+			],
+			"missionHoP": 56,
+			"createdAt": "2024-06-01T05:44:57.592Z",
+			"finish": true
+		},
+		"UWXT6V": {
+			"missionRank": "E+",
+			"missionCreator": "<@511750157822328842>",
+			"missionDescription": "berburu laba laba",
+			"missionLeader": "<@1022616986812944484>",
+			"missionMember": [
+				"<@1170877977249194016>",
+				"<@1022616986812944484>"
+			],
+			"missionHoP": 113,
+			"createdAt": "2024-06-01T06:59:08.757Z",
+			"finish": true
+		}
+	}
+}
