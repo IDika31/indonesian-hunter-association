@@ -37,7 +37,6 @@ start "Installing Bun"
 finished
 export BUN_INSTALL="$HOME/.bun" 
 export PATH="$BUN_INSTALL/bin:$PATH"
-write_profile_d_script
 
 # Build the project
 cd $BUILD_DIR
