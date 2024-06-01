@@ -1,7 +1,7 @@
 import { Client, IntentsBitField } from 'discord.js';
 import { CommandKit } from 'commandkit';
 import path from 'path';
-import * as express from 'express';
+import express from 'express';
 
 const client = new Client({
 	intents: [
