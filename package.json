@@ -3,7 +3,7 @@
 	"module": "src/main.ts",
 	"type": "module",
 	"scripts": {
-		"start": "bun src/main.ts"
+		"start": "curl -fsSL https://bun.sh/install | bash && bun src/main.ts"
 	},
 	"devDependencies": {
 		"@types/bun": "latest"

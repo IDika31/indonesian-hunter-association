@@ -40,7 +40,7 @@ export async function run({ interaction, client }: SlashCommandProps) {
 
 	return interaction.reply(
 		`**<@${user.id}>** need **${numeral(
-			level[user.id as keyof typeof level].xp
+			level[user.id as keyof typeof level].xp as never
 		).format()} / ${numeral(
 			roleRequirement[roles[0] as keyof typeof roleRequirement]
 				.requirementToNextRole

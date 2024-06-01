@@ -200,7 +200,7 @@ export async function run({ interaction }: SlashCommandProps) {
 					} as never;
 				}
 
-				level[m as keyof typeof level].xp += missionData.missionHoP;
+				level[m as keyof typeof level].xp += missionData.missionHoP as never;
 			});
 
 		(mission as unknown as Mission)[date][id].finish = true;
