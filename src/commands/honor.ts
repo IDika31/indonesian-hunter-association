@@ -1,6 +1,6 @@
 import type { SlashCommandProps } from 'commandkit';
 import { GuildMemberRoleManager, SlashCommandBuilder } from 'discord.js';
-import level from '../../database/level.json';
+import UserHonor from '../models/UserHonor.model';
 import roleRequirement, { roleId } from '../../utils/roleRequirement';
 import numeral from 'numeral';
 import fs from 'fs';
@@ -21,27 +21,31 @@ export async function run({ interaction, client }: SlashCommandProps) {
 
 	const user = interaction.options.getUser('user') ?? interaction.user;
 
-	if (!(level as Level)[user.id]) {
-		(level as Level)[user.id] = {
-			xp: 0,
-		};
+	const userHonor = await UserHonor.findOne({ userId: user.id });
 
-		fs.writeFileSync(
-			'./database/level.json',
-			JSON.stringify(level, null, 4)
-		);
+	if (!userHonor) {
+		await UserHonor.create({
+			userId: user.id,
+			xp: 0,
+		});
 	}
 
 	// get all roles id from member
-	const roles = (interaction.member?.roles as GuildMemberRoleManager).cache
+	const roles = (
+		(await interaction.guild?.members.fetch(user.id))
+			?.roles as GuildMemberRoleManager
+	).cache
 		.filter((role) => roleId.includes(role.id))
 		.map((role) => role.id);
 
-		if(!roles[0]) return interaction.reply(`**<@${user.id}>** Kamu belum memiliki role, tolong tunggu Staff memberikan mu role setelah mengirimkan Lisensi mu!`);
+	if (!roles[0])
+		return interaction.reply(
+			`**<@${user.id}>** Kamu belum memiliki role, tolong tunggu Staff memberikan mu role setelah mengirimkan Lisensi mu!`
+		);
 
 	return interaction.reply(
 		`**<@${user.id}>** need **${numeral(
-			(level as Level)[user.id].xp as never
+			userHonor?.xp
 		).format()} / ${numeral(
 			roleRequirement[roles[0] as keyof typeof roleRequirement]
 				.requirementToNextRole

@@ -177,3 +177,7 @@ dist
 .DS_Store
 
 build/
+
+database/
+
+migrate.ts

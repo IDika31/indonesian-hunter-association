@@ -1,21 +1,10 @@
 import type { SlashCommandProps } from 'commandkit';
-import { SlashCommandBuilder } from 'discord.js';
-import randomId from 'short-unique-id';
-import mission from '../../database/mission.json';
-import level from '../../database/level.json';
-import honorPoint from '../../utils/honorPoint';
-import fs from 'fs';
-import type { Mission, Level } from '../../utils/interfaces';
-
-const uid = new randomId();
-const date = new Date()
-	.toLocaleDateString('id-ID', {
-		day: '2-digit',
-		month: '2-digit',
-		year: 'numeric',
-	})
-	.split('/')
-	.join('-');
+import {
+	SlashCommandBuilder,
+} from 'discord.js';
+import createMission from './mission/create';
+import finishMission from './mission/finish';
+import listMission from './mission/list';
 
 export const data = new SlashCommandBuilder()
 	.setName('mission')
@@ -30,6 +19,7 @@ export const data = new SlashCommandBuilder()
 					.setDescription('The Rank of the mission')
 					.setRequired(true)
 					.setChoices([
+						{ name: 'Other', value: 'Other' },
 						{ name: 'Rank A+', value: 'A+' },
 						{ name: 'Rank A', value: 'A' },
 						{ name: 'Rank B+', value: 'B+' },
@@ -94,13 +84,19 @@ export const data = new SlashCommandBuilder()
 			.setDescription('List all mission')
 			.addStringOption((option) =>
 				option
-					.setName('finish')
-					.setDescription('The date of the mission')
+					.setName('mission-type')
+					.setDescription('The type of the mission')
 					.setRequired(true)
 					.addChoices([
-						{ name: 'Finish', value: 'finish' },
-						{ name: 'Unfinish', value: 'unfinish' },
+						{ name: 'Sudah Selesai', value: 'finish' },
+						{ name: 'Belum Selesai', value: 'unfinish' },
 					])
+			)
+			.addStringOption((option) =>
+				option
+					.setName('date')
+					.setDescription('The date of the mission (dd-mm-yyyy)')
+					.setRequired(false)
 			)
 			.addIntegerOption((option) =>
 				option
@@ -110,153 +106,23 @@ export const data = new SlashCommandBuilder()
 			)
 	);
 
-export async function run({ interaction }: SlashCommandProps) {
+export async function run({ interaction, client, handler }: SlashCommandProps) {
+	const date = interaction.options.getString('date') ?? new Date()
+		.toLocaleDateString('id-ID', {
+			day: '2-digit',
+			month: '2-digit',
+			year: 'numeric',
+		})
+		.split('/')
+		.join('-');
+
 	const subcommand = interaction.options.getSubcommand();
 	if (subcommand == 'create') {
-		const id = uid.randomUUID(6).toUpperCase();
-		const rank = interaction.options.getString('mission_rank');
-		const creator = interaction.options.getString('mission_creator');
-		const description = interaction.options.getString(
-			'mission_description'
-		);
-		const leader = `<@${
-			interaction.options.getUser('mission_leader')?.id
-		}>`;
-		const member = interaction.options.getString(
-			'mission_member'
-		) as string;
-
-		const parseMember = member
-			.trim()
-			.split(/\ |\n/g)
-			.map((m) => m.trim())
-			.filter((m) => m != '');
-
-		const HoP =
-			Math.round(
-				honorPoint[rank as keyof typeof honorPoint] /
-					(parseMember.length + 1)
-			) ?? interaction.options.getInteger('mission_hop');
-
-		if (!(mission as unknown as Mission)[date]) {
-			(mission as unknown as Mission)[date] = {};
-		}
-
-		(mission as unknown as Mission)[date][id] = {
-			missionRank: rank as string,
-			missionCreator: creator as string,
-			missionDescription: description as string,
-			missionLeader: leader as string,
-			missionMember: parseMember,
-			missionHoP: HoP,
-			createdAt: new Date().toISOString(),
-			finish: false,
-		};
-
-		fs.writeFileSync(
-			'./database/mission.json',
-			JSON.stringify(mission, null, 4)
-		);
-
-		return await interaction.reply(`Berhasil mendaftarkan hunter ke misi baru dengan rank "**${rank}**"!
-		
-**Detail Misi:**
-- **ID:** ${id}
-- **Deskripsi:** ${description}
-- **Pencipta Misi:** ${creator}
-- **Honor Point / Peserta:** ${HoP}
-- **Leader:** ${leader}
-- **Member:** ${parseMember.join(' | ')}
-`);
+		await createMission({ interaction, client, handler }, date);
 	} else if (subcommand == 'finish') {
-		const id = interaction.options.getString('mission_id') as string;
-
-		if (!(mission as unknown as Mission)[date][id]) {
-			return await interaction.reply(
-				`Misi dengan ID **${id}** tidak ditemukan!`
-			);
-		}
-
-		const missionData = (mission as unknown as Mission)[date][id];
-
-		const member = missionData.missionMember;
-		const leader = missionData.missionLeader;
-
-		member.push(leader);
-		member
-			.map((m) => m.replace(/<@|>/g, ''))
-			.forEach(async (m) => {
-				if (!(level as Level)[m]) {
-					(level as Level)[m] = {
-						xp: 0,
-					} as never;
-				}
-
-				(level as Level)[m].xp += missionData.missionHoP;
-			});
-
-		(mission as unknown as Mission)[date][id].finish = true;
-		fs.writeFileSync(
-			'./database/mission.json',
-			JSON.stringify(mission, null, 4) as never
-		);
-
-		fs.writeFileSync(
-			'./database/level.json',
-			JSON.stringify(level, null, 4) as never
-		);
-
-		return await interaction.reply(
-			`Misi dengan ID **${id}** telah selesai!
-			
-Semua hunter yang mengikuti misi tersebut mendapatkan **${
-				missionData.missionHoP
-			}** Honor Point!
-${member.join(' | ')}`
-		);
+		await finishMission({ interaction, client, handler }, date);
 	} else if (subcommand == 'list') {
-		const finish = interaction.options.getString('finish') as string;
-
-		const missionList = Object.entries(
-			(mission as unknown as Mission)[date]
-		)
-			.filter(([_, missionData]) => {
-				if (finish == 'finish') {
-					return missionData.finish;
-				} else {
-					return !missionData.finish;
-				}
-			})
-			.map(([id, missionData]) => {
-				return `**ID:** ${id}
-**Deskripsi:** ${missionData.missionDescription}
-**Pencipta Misi:** ${missionData.missionCreator}
-**Honor Point / Peserta:** ${missionData.missionHoP}
-**Leader:** ${missionData.missionLeader}
-**Member:** ${missionData.missionMember.join(' | ')}
-`;
-			});
-
-			// Setting pagination 5/page
-			const page = interaction.options.getInteger('page') ?? 1;
-			const start = (page - 1) * 5;
-			const end = start + 5;
-
-			const missionListPage = missionList.slice(start, end);
-
-			if (!missionListPage[0]) {
-				return await interaction.reply(
-					`Tidak ada misi yang ${
-						finish == 'finish' ? 'Selesai' : 'Belum Selesai'
-					} pada halaman **${page}**!`
-				);
-			}
-
-		return await interaction.reply(`**Daftar Misi yang ${
-			finish == 'finish' ? 'Selesai' : 'Belum Selesai'
-		}:**
-
-${missionListPage.join('\n') || 'Tidak ada misi!'}`);
+		await listMission({ interaction, client, handler }, date);
 	}
 }
 

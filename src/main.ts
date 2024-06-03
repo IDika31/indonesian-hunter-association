@@ -2,6 +2,7 @@ import { Client, IntentsBitField } from 'discord.js';
 import { CommandKit } from 'commandkit';
 import path from 'path';
 import express from 'express';
+import mongoose from 'mongoose';
 
 const client = new Client({
 	intents: [
@@ -25,7 +26,8 @@ new CommandKit({
 
 const app = express();
 
-app.listen(Bun.env.PORT, () => {
+app.listen(Bun.env.PORT, async () => {
 	console.log(`Server is running on port ${Bun.env.PORT}`);
+	mongoose.connect(Bun.env.DATABASE_URL as string).then(() => console.log('Connected to MongoDB'))
 	client.login(Bun.env.DISCORD_TOKEN as string);
 });
