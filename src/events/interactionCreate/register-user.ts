@@ -1,17 +1,15 @@
 import type { CacheType, Client, Interaction, Message } from 'discord.js';
-import level from '../../../database/level.json';
-import fs from 'fs';
+import UserHonor from '../../models/Mission.model'
 
-export default function (interaction: Interaction<CacheType>) {
+export default async function (interaction: Interaction<CacheType>) {
 	if (!interaction.isCommand()) return;
-	if (!level[interaction.user.id as keyof typeof level]) {
-		level[interaction.user.id as keyof typeof level] = {
-			xp: 0,
-		} as never;
 
-		fs.writeFileSync(
-			'./database/level.json',
-			JSON.stringify(level, null, 4)
-		);
+	const user = UserHonor.findOne({ userID: interaction.user.id })
+
+	if (!user) {
+		await UserHonor.create({
+			userID: interaction.user.id,
+			xp: 0
+		})
 	}
 }

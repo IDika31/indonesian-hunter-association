@@ -1,16 +1,13 @@
 import type { Client, Message } from 'discord.js';
-import level from '../../../database/level.json';
-import fs from 'fs';
+import UserHonor from '../../models/Mission.model';
 
-export default function (message: Message<true>) {
-	if (!level[message.author.id as keyof typeof level]) {
-		level[message.author.id as keyof typeof level] = {
+export default async function (message: Message<true>) {
+	const user = UserHonor.findOne({ userID: message.author.id });
+
+	if (!user) {
+		await UserHonor.create({
+			userID: message.author.id,
 			xp: 0,
-		} as never;
-
-		fs.writeFileSync(
-			'./database/level.json',
-			JSON.stringify(level, null, 4)
-		);
+		});
 	}
 }
