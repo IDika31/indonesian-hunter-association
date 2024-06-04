@@ -218,7 +218,7 @@ Page ${page} / ${Math.ceil(missionList.length / 5)}`,
 		nextPageButton.setDisabled(true);
 
 		await reply.edit({
-			components: [buttonRow],
+			components: [nextPageOrPrevPageRow],
 		});
 	});
 }

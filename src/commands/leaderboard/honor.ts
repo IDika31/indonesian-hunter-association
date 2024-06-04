@@ -79,7 +79,7 @@ ${userData.join('\n')}`,
 		if (i.user.id !== interaction.user.id)
 			return i.reply({
 				content: `Hanya <@${interaction.user.id}> yang bisa menggunakan tombol ini!`,
-				// ephemeral: true,
+				ephemeral: true,
 			});
 
 		await i.deferUpdate();
