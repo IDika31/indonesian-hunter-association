@@ -22,14 +22,14 @@ export default async function finishMission(
 		);
 
 	const missionData = mission;
-	const member = missionData?.missionMember;
-	const leader = missionData?.missionLeader;
+	const member = missionData.missionMember;
+	const leader = missionData.missionLeader;
 
-	member?.push(leader as string);
+	member.push(leader);
 
 	await UserHonor.updateMany(
 		{ userId: { $in: member.map((m) => m.replace(/<@|>/g, '')) } },
-		{ $inc: { xp: missionData?.missionHoP } }
+		{ $inc: { xp: missionData.missionHoP } }
 	);
 
 	await MissionModel.findOneAndUpdate(
