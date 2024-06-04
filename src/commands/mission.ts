@@ -127,5 +127,12 @@ export async function run({ interaction, client, handler }: SlashCommandProps) {
 }
 
 export const options = {
-	staffOnly: true,
+	staffOnly: {
+		missionAdmin: [
+			'694072836800774174',
+			'511750157822328842',
+			'1230491973970825338',
+		],
+		status: true,
+	},
 };

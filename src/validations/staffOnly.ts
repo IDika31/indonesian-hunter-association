@@ -6,17 +6,17 @@ export default async function ({
 	commandObj,
 	client,
 }: ValidationProps) {
-	if (commandObj.options?.staffOnly) {
+	if (commandObj.options?.staffOnly.status) {
 		const member = interaction.guild?.members.cache.get(
 			interaction.user.id
 		);
-		const adminMisi = ['694072836800774174', '511750157822328842'];
+		const adminMisi = commandObj.options?.staffOnly
+			.missionAdmin as string[];
 		if (
 			member?.roles.cache.find(
 				(role) =>
 					role.id == '1242507903751946280' ||
-					role.id == '1243037522548883528' ||
-					role.id == '1230491973970825338'
+					role.id == '1243037522548883528'
 			) ||
 			adminMisi.includes(interaction.user.id)
 		) {

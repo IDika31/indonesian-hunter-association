@@ -79,5 +79,8 @@ export async function run({ interaction, client, handler }: SlashCommandProps) {
 }
 
 export const options = {
-	staffOnly: true
+	staffOnly: {
+		missionAdmin: [],
+		status: true
+	}
 };
