@@ -9,7 +9,6 @@ import type {
 export default async function ({
 	interaction,
 	commandObj,
-	client,
 }: ValidationProps) {
 	if (commandObj.options?.staffOnly) {
 		const subcommand = (

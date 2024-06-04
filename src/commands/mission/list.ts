@@ -7,9 +7,10 @@ import {
 	ButtonStyle,
 	ComponentType,
 } from 'discord.js';
+import pagination from '../../../utils/pagination';
 
 export default async function listMission(
-	{ interaction, client, handler }: SlashCommandProps,
+	{ interaction }: SlashCommandProps,
 	date: string
 ) {
 	const finish = interaction.options.getString('mission-type') as string;
@@ -36,9 +37,7 @@ export default async function listMission(
 	// Setting pagination 5/page
 	let page = interaction.options.getInteger('page') ?? 1;
 
-	const start = (page - 1) * 5;
-	const end = start + 5;
-	const missionListPage = missionList.slice(start, end);
+	const missionListPage = pagination(missionList, page, 5);
 
 	if (!missionListPage[0]) {
 		return await interaction.reply(
@@ -106,6 +105,8 @@ Page ${page} / ${Math.ceil(missionList.length / 5)}`,
 		time: 30_000,
 	});
 
+	collector.on('end', async () => await reply.delete());
+
 	collector.on('collect', async (i) => {
 		if (i.user.id !== interaction.user.id)
 			return i.reply({
@@ -133,7 +134,9 @@ Page ${page} / ${Math.ceil(missionList.length / 5)}`,
 				);
 
 			if (mission.finish)
-				return await i.message.reply(`Misi dengan ID **${id}** sudah selesai!`);
+				return await i.message.reply(
+					`Misi dengan ID **${id}** sudah selesai!`
+				);
 
 			const missionData = mission;
 			const member = missionData?.missionMember;
@@ -160,7 +163,7 @@ Page ${page} / ${Math.ceil(missionList.length / 5)}`,
 				}
 			);
 
-            missionList = missionList.filter((m) => !m.includes(id));
+			missionList = missionList.filter((m) => !m.includes(id));
 
 			await i.message.reply({
 				content: `Misi dengan ID **${id}** telah selesai!
@@ -179,9 +182,7 @@ ${member?.join(' | ')}`,
 			nextPageButton.setDisabled(true);
 		else nextPageButton.setDisabled(false);
 
-		const start = (page - 1) * 5;
-		const end = start + 5;
-		const missionListPageNow = missionList.slice(start, end);
+		const missionListPageNow = pagination(missionList, page, 5);
 
 		const buttonListNow = missionListPageNow.map((v) =>
 			new ButtonBuilder()

@@ -1,14 +1,6 @@
-import type { CommandKit, SlashCommandProps } from 'commandkit';
-import randomId from 'short-unique-id';
-import honorPoint from '../../../utils/honorPoint';
+import type { SlashCommandProps } from 'commandkit';
 import MissionModel from '../../models/Mission.model';
 import UserHonor from '../../models/UserHonor.model';
-import type {
-	ButtonInteraction,
-	CacheType,
-	ChatInputCommandInteraction,
-	Client,
-} from 'discord.js';
 
 export default async function finishMission(
 	{ interaction }: SlashCommandProps,
@@ -37,7 +29,7 @@ export default async function finishMission(
 
 	await UserHonor.updateMany(
 		{ userId: { $in: member.map((m) => m.replace(/<@|>/g, '')) } },
-		{ $inc: { xp: missionData?.missionHoP as number } }
+		{ $inc: { xp: missionData?.missionHoP } }
 	);
 
 	await MissionModel.findOneAndUpdate(
