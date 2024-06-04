@@ -32,7 +32,7 @@ export default async function honorLeaderboard(
 		.setStyle(ButtonStyle.Success);
 	const pageBtn = new ButtonBuilder()
 		.setCustomId('page')
-		.setLabel(`${page} / ${Math.ceil(userHonor.length / 5)}`)
+		.setLabel(`${page} / ${Math.ceil(userHonor.length / limit)}`)
 		.setStyle(ButtonStyle.Secondary)
 		.setDisabled(true);
 
@@ -45,7 +45,7 @@ export default async function honorLeaderboard(
 	if (page == 1) prevBtn.setDisabled(true);
 	else prevBtn.setDisabled(false);
 
-	if (page == Math.ceil(userHonor.length / 5)) nextBtn.setDisabled(true);
+	if (page == Math.ceil(userHonor.length / limit)) nextBtn.setDisabled(true);
 	else nextBtn.setDisabled(false);
 
 	const userData = pagination(
@@ -82,15 +82,15 @@ ${userData.join('\n')}`,
 		if (i.customId == 'prev') {
 			if (page > 1) page--;
 		} else if (i.customId == 'next') {
-			if (page < Math.ceil(userHonor.length / 5)) page++;
+			if (page < Math.ceil(userHonor.length / limit)) page++;
 		}
 
-		pageBtn.setLabel(`${page} / ${Math.ceil(userHonor.length / 5)}`);
+		pageBtn.setLabel(`${page} / ${Math.ceil(userHonor.length / limit)}`);
 
 		if (page == 1) prevBtn.setDisabled(true);
 		else prevBtn.setDisabled(false);
 
-		if (page == Math.ceil(userHonor.length / 5)) nextBtn.setDisabled(true);
+		if (page == Math.ceil(userHonor.length / limit)) nextBtn.setDisabled(true);
 		else nextBtn.setDisabled(false);
 
 		const userData = pagination(
