@@ -102,10 +102,9 @@ Page ${page} / ${Math.ceil(missionList.length / 5)}`,
 
 	const collector = reply.createMessageComponentCollector({
 		componentType: ComponentType.Button,
+		filter: (i) => i.user.id === interaction.user.id,
 		time: 30_000,
 	});
-
-	collector.on('end', async () => await reply.delete());
 
 	collector.on('collect', async (i) => {
 		if (i.user.id !== interaction.user.id)
@@ -212,5 +211,14 @@ Page ${page} / ${Math.ceil(missionList.length / 5)}`,
 			}),
 		});
 		collector.resetTimer();
+	});
+
+	collector.on('end', async () => {
+		prevPageButton.setDisabled(true);
+		nextPageButton.setDisabled(true);
+
+		await reply.edit({
+			components: [buttonRow],
+		});
 	});
 }

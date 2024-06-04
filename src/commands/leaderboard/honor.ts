@@ -17,13 +17,10 @@ export default async function honorLeaderboard(
 	numeral.defaultFormat('0,0');
 
 	const userHonor = await UserHonor.find({
-        userId: {
-            $not: {
-                $eq: '<@development>'
-            }
-        }
-    })
-		.sort({ xp: 1 })
+		userId: {
+			$not: '<@development>',
+		},
+	}).sort('xp');
 
 	const prevBtn = new ButtonBuilder()
 		.setCustomId('prev')
@@ -69,6 +66,7 @@ ${userData.join('\n')}`,
 
 	const collector = msg.createMessageComponentCollector({
 		componentType: ComponentType.Button,
+		filter: (i) => i.user.id === interaction.user.id,
 		time: 30_000,
 	});
 
@@ -113,5 +111,12 @@ ${userData.join('\n')}`,
 		collector.resetTimer();
 	});
 
-	collector.on('end', async () => await msg.delete());
+	collector.on('end', async () => {
+		prevBtn.setDisabled(true);
+		nextBtn.setDisabled(true);
+
+		await msg.edit({
+			components: [btnRow],
+		});
+	});
 }
