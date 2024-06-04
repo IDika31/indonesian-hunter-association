@@ -133,6 +133,6 @@ export const options = {
 			'511750157822328842',
 			'1230491973970825338',
 		],
-		status: true,
+		subcommand: ['create', 'finish', 'list']
 	},
 };
