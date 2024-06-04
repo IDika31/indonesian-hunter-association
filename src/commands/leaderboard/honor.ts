@@ -18,7 +18,9 @@ export default async function honorLeaderboard(
 
 	const userHonor = await UserHonor.find({
 		userId: {
-			$not: '<@development>',
+			$not: {
+				$eq: '<@development>',
+			},
 		},
 	}).sort('xp');
 
