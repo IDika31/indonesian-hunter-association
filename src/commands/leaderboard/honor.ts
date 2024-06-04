@@ -14,13 +14,18 @@ export default async function honorLeaderboard(
 	page: number = 1,
 	limit: number = 10
 ) {
-	numeral.defaultFormat('0,0');
-
 	const userHonor = await UserHonor.find({
 		userId: {
 			$ne: '<@development>',
 		},
 	}).sort({ xp: -1 });
+
+	if (limit > 25) limit = 25;
+	if (limit < 5) limit = 5;
+
+	if (page < 1) page = 1;
+	if (page > Math.ceil(userHonor.length / limit))
+		Math.ceil(userHonor.length / limit);
 
 	const prevBtn = new ButtonBuilder()
 		.setCustomId('prev')
@@ -90,7 +95,8 @@ ${userData.join('\n')}`,
 		if (page == 1) prevBtn.setDisabled(true);
 		else prevBtn.setDisabled(false);
 
-		if (page == Math.ceil(userHonor.length / limit)) nextBtn.setDisabled(true);
+		if (page == Math.ceil(userHonor.length / limit))
+			nextBtn.setDisabled(true);
 		else nextBtn.setDisabled(false);
 
 		const userData = pagination(
