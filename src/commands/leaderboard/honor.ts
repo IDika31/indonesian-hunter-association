@@ -18,9 +18,9 @@ export default async function honorLeaderboard(
 
 	const userHonor = await UserHonor.find({
 		userId: {
-			$ne: '<@development>'
+			$ne: '<@development>',
 		},
-	}).sort('xp');
+	}).sort({ xp: -1 });
 
 	const prevBtn = new ButtonBuilder()
 		.setCustomId('prev')
