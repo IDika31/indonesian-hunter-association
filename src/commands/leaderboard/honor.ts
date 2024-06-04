@@ -54,9 +54,9 @@ export default async function honorLeaderboard(
 	else nextBtn.setDisabled(false);
 
 	const userData = pagination(
-		userHonor.map(
-			(u, i) => `${i + 1}. <@${u.userId}>: ${u.xp} Honor Point`
-		),
+		userHonor
+			.map((u, i) => `${i + 1}. <@${u.userId}>: ${u.xp} Honor Point`)
+			.filter((u) => !u.includes('<@development>')),
 		page ?? 1,
 		limit
 	);
@@ -100,9 +100,9 @@ ${userData.join('\n')}`,
 		else nextBtn.setDisabled(false);
 
 		const userData = pagination(
-			userHonor.map(
-				(u, i) => `${i + 1}. <@${u.userId}>: ${u.xp} Honor Point`
-			),
+			userHonor
+				.map((u, i) => `${i + 1}. <@${u.userId}>: ${u.xp} Honor Point`)
+				.filter((u) => !u.includes('<@development>')),
 			page,
 			limit
 		);
