@@ -29,7 +29,10 @@ export default async function finishMission(
 
 	await UserHonor.updateMany(
 		{ userId: { $in: member.map((m) => m.replace(/<@|>/g, '')) } },
-		{ $inc: { xp: missionData.missionHoP } }
+		{ $inc: { xp: missionData.missionHoP } },
+		{
+			upsert: true,
+		}
 	);
 
 	await MissionModel.findOneAndUpdate(
