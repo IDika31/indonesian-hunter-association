@@ -170,8 +170,6 @@ Semua hunter yang mengikuti misi tersebut mendapatkan **${
 				}** Honor Point!
 ${member?.join(' | ')}`,
 			});
-
-            collector.resetTimer();
 		}
 
 		if (page == 1) prevPageButton.setDisabled(true);

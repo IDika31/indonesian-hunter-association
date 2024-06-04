@@ -15,7 +15,8 @@ export default async function ({
 			member?.roles.cache.find(
 				(role) =>
 					role.id == '1242507903751946280' ||
-					role.id == '1243037522548883528'
+					role.id == '1243037522548883528' ||
+					role.id == '1230491973970825338'
 			) ||
 			adminMisi.includes(interaction.user.id)
 		) {
