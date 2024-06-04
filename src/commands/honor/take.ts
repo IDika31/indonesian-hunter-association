@@ -35,9 +35,9 @@ export default async function takeHonor({ interaction }: SlashCommandProps) {
 	await UserHonor.updateOne({ userId: user.id }, { $inc: { xp: -amount } });
 
 	return interaction.reply({
-		content: `Mengambil Honor Point dari **<@${
-			user.id
-		}>** sebesar **${numeral(amount).format()}**!`,
+		content: `Mengambil **${numeral(
+			amount
+		).format()}** Honor Point dari **<@${user.id}>**!`,
 		ephemeral: true,
 	});
 }
