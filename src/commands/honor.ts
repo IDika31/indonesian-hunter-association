@@ -78,4 +78,6 @@ export async function run({ interaction, client, handler }: SlashCommandProps) {
 	}
 }
 
-export const options = {};
+export const options = {
+	staffOnly: true
+};
