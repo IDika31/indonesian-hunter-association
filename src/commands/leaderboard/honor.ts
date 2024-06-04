@@ -16,7 +16,14 @@ export default async function honorLeaderboard(
 ) {
 	numeral.defaultFormat('0,0');
 
-	const userHonor = await UserHonor.find().sort((a, b) => a.xp - b.xp);
+	const userHonor = await UserHonor.find({
+        userId: {
+            $not: {
+                $eq: '<@development>'
+            }
+        }
+    })
+		.sort({ xp: 1 })
 
 	const prevBtn = new ButtonBuilder()
 		.setCustomId('prev')
