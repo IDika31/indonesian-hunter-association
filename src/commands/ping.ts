@@ -10,7 +10,7 @@ export async function run({interaction, client}: SlashCommandProps) {
 
 	const ping = reply.createdTimestamp - interaction.createdTimestamp;
 
-	interaction.editReply(`Pong! Client ${ping}ms | Websocket ${client.ws.ping}ms`);
+	await interaction.editReply(`Pong! Client ${ping}ms | Websocket ${client.ws.ping}ms`);
 }
 
 export const options = {}
