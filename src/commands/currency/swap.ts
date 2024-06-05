@@ -59,14 +59,14 @@ export default async function swapCurrency({
 				{ userId: i.interaction.user.id },
 				{
 					$inc: {
-						pg: amount,
+						pg: amount * 2,
 					},
 				},
 				{ upsert: true }
 			);
 
 			await i.reply({
-				content: `Berhasil melakukan Swap sebesar **${amount} GC** ke **${amount} PG**!`,
+				content: `Berhasil melakukan Swap sebesar **${amount} GC** ke **${amount * 2} PG**!`,
 			});
 			await i.delete();
 
