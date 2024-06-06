@@ -1,15 +1,9 @@
 import type { ValidationProps } from 'commandkit';
-import type {
-	CacheType,
-	ChatInputCommandInteraction,
-	CommandInteractionOptionResolver,
-	GuildMemberRoleManager,
-} from 'discord.js';
+import type { CacheType, CommandInteractionOptionResolver } from 'discord.js';
 
-export default async function ({
-	interaction,
-	commandObj,
-}: ValidationProps) {
+export default async function ({ interaction, commandObj }: ValidationProps) {
+	if (!interaction.isCommand()) return;
+
 	if (commandObj.options?.staffOnly) {
 		const subcommand = (
 			interaction.options as Omit<
@@ -36,7 +30,6 @@ export default async function ({
 		) {
 			return false;
 		} else {
-			if (!interaction.isCommand()) return;
 			interaction.reply({
 				content: 'You need to be a staff to use this command!',
 				ephemeral: true,
