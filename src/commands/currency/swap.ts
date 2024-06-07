@@ -110,6 +110,8 @@ export default async function swapCurrency({
 			});
 
 			await SwapPaymentModel.deleteOne({ userId: interaction.user.id });
+		} else  {
+			await message.delete()
 		}
 	});
 }
