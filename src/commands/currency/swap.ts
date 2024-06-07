@@ -103,5 +103,13 @@ export default async function swapCurrency({
 		}
 	});
 
-	collect?.on('end', async () => await message.delete());
+	collect?.on('end', async (c) => {
+		if (c.size === 0) {
+			await message.edit({
+				content: 'Waktu untuk melakukan Swap telah habis!',
+			});
+
+			await SwapPaymentModel.deleteOne({ userId: interaction.user.id });
+		}
+	});
 }
