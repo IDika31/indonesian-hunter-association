@@ -16,6 +16,33 @@ export default async function (interaction: Interaction<CacheType>) {
 		const user = interaction.guild?.members.cache.get(interaction.user.id);
 		const userRoles = user?.roles.cache.map((role) => role.id);
 
+		// if (
+		// 	new Date(
+		// 		new Date(Date.now()).toLocaleString('en-US', {
+		// 			timeZone: 'Asia/Jakarta',
+		// 		})
+		// 	).getTime() <
+		// 	new Date(
+		// 		new Date('2024-06-08 20:30:00').toLocaleString('en-US', {
+		// 			timeZone: 'Asia/Jakarta',
+		// 		})
+		// 	).getTime()
+		// ) {
+		// 	return await interaction.reply({
+		// 		content:
+		// 			'Mohon maaf, di portal ini akan di laksanakan Raid dan portal akan dibuka sementara pada **JAM 19:30 WIB** untuk melaksanakan Raid!',
+		// 		ephemeral: true,
+		// 	});
+		// }
+
+		// if (!userRoles?.includes('1247092894133649511')) {
+		// 	return await interaction.reply({
+		// 		content:
+		// 			'Mohon maaf, di portal ini sedang ada Raid, Hunter yang tidak mengikuti Raid **DILARANG KERAS** untuk masuk!',
+		// 		ephemeral: true,
+		// 	});
+		// }
+
 		let haveRole = false;
 		for (const role of portalRole) {
 			if (userRoles?.includes(role.id)) {
@@ -56,7 +83,6 @@ export default async function (interaction: Interaction<CacheType>) {
 			{
 				userId: interaction.user.id,
 			},
-			{ pg: 1 }
 		);
 
 		if (!userPg) {
@@ -73,7 +99,6 @@ export default async function (interaction: Interaction<CacheType>) {
 Kamu membutuhkan 1 PG (50 Silver) untuk masuk!
 Silahkan tukarkan Gold Coin Kamu ke PG dengan cara /currency swap <jumlah>`,
 				ephemeral: true,
-				
 			});
 			return;
 		}

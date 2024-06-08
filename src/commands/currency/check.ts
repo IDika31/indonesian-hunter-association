@@ -18,9 +18,7 @@ export default async function checkCurrency({
 		return interaction.reply({
 			content: `**<@${user.id}>** belum memiliki PG (Portal Guardian) Point!`,
 		});
-	}
-
-	return interaction.reply({
+	} else return interaction.reply({
 		content: `**<@${user.id}>** memiliki **${userPg?.pg}** PG (Portal Guardian) Point!`,
 	});
 }

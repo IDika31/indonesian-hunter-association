@@ -16,7 +16,7 @@ export default async function swapCurrency({
 		});
 	}
 
-	const amount = interaction.options.getInteger('amount')!;
+	const amount = interaction.options.getInteger('amount') as number;
 
 	await SwapPaymentModel.create({
 		userId: interaction.user.id,
@@ -67,16 +67,12 @@ export default async function swapCurrency({
 					}*!`,
 				});
 			} else {
-				sisa -= amountSend - amount;
+				sisa -= (amountSend - amount);
 			}
 		}
 
 		if (
 			i.interaction?.commandName === 'send' &&
-			i.interaction.user.id === interaction.user.id &&
-			i.embeds[0].data.description?.includes(
-				`sent ${amount - sisa} 🪙 to`
-			) &&
 			userId === '658761055627116604'
 		) {
 			await UserBalanceModel.updateOne(
@@ -99,7 +95,7 @@ export default async function swapCurrency({
 
 			await SwapPaymentModel.deleteOne({ userId: i.interaction.user.id });
 
-			collect.stop();
+			collect.stop('done');
 		}
 	});
 
@@ -110,7 +106,7 @@ export default async function swapCurrency({
 			});
 
 			await SwapPaymentModel.deleteOne({ userId: interaction.user.id });
-		} else  {
+		} else {
 			await message.delete()
 		}
 	});
