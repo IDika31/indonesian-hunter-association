@@ -177,7 +177,7 @@ export const portalRole = [
 		id: '1247803141630726186',
 		role: '🐲 KINGDOM OF DRAGONS',
 		value: 'kingdom-of-dragons',
-		locked: false,
+		locked: true,
 	},
 	{
 		id: '1247803164783284367',
