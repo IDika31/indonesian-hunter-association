@@ -3,6 +3,12 @@ import UserHonor from '../../models/UserHonor.model';
 import requirement, { roleId } from '../../../utils/roleRequirement';
 
 export default async function (message: Message<true>, client: Client<true>) {
+	if (message.author.bot) return;
+	// if (['338496377103450123', '1022463333783318529', '616217395429638155'].includes(message.author.id)) {
+    //     const channel = await client.channels.fetch(message.channelId);
+
+	// 	console.log(JSON.stringify(channel, null, 4));
+	// }
 	// if (message.channelId !== '1256923437310410832') return;
 	let user = await UserHonor.findOne({ userId: message.author.id });
 
