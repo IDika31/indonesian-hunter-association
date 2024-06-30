@@ -19,26 +19,13 @@ export default async function checkHonor({ interaction }: SlashCommandProps) {
 	}
 
 	// get all roles id from member
-	const roles = (
-		(await interaction.guild?.members.fetch(user.id))
-			?.roles as GuildMemberRoleManager
-	).cache
-		.filter((role) => roleId.includes(role.id))
-		.map((role) => role.id);
+	const roles = ((await interaction.guild?.members.fetch(user.id))?.roles as GuildMemberRoleManager).cache.filter((role) => roleId.includes(role.id)).map((role) => role.id);
 
-	if (!roles[0])
-		return interaction.reply(
-			`**<@${user.id}>** Kamu belum memiliki role, tolong tunggu Staff memberikan mu role setelah mengirimkan Lisensi mu!`
-		);
+	if (!roles[0]) return interaction.reply(`**<@${user.id}>** Kamu belum memiliki role, tolong tunggu Staff memberikan mu role setelah mengirimkan Lisensi mu!`);
 
-	return interaction.reply(
-		`**<@${user.id}>** need **${numeral(
-			userHonor?.xp
-		).format()} / ${numeral(
-			roleRequirement[roles[0] as keyof typeof roleRequirement]
-				.requirementToNextRole
-		).format()}** more Honor Point to rank up to rank "${
-			roleRequirement[roles[0] as keyof typeof roleRequirement].nextRank
-		}"!`
-	);
+	let messageSend = ''
+	if (!roleRequirement[roles[0] as keyof typeof roleRequirement]) messageSend = `**<@${user.id}>** Kamu telah mencapai batas maksimal Rank untuk umum yaitu rank **S**!`;
+	else messageSend = `**<@${user.id}>** need **${numeral(userHonor?.xp).format()} / ${numeral(roleRequirement[roles[0] as keyof typeof roleRequirement].requirementToNextRole).format()}** more Honor Point to rank up to rank "${roleRequirement[roles[0] as keyof typeof roleRequirement].nextRank}"!`;
+
+	return interaction.reply(messageSend);
 }

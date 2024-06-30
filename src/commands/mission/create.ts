@@ -2,11 +2,9 @@ import type { SlashCommandProps } from 'commandkit';
 import randomId from 'short-unique-id';
 import honorPoint from '../../../utils/honorPoint';
 import MissionModel from '../../models/Mission.model';
+import rupionReward from '../../../utils/rupionReward';
 
-export default async function createMission(
-	{ interaction }: SlashCommandProps,
-	date: string
-) {
+export default async function createMission({ interaction }: SlashCommandProps, date: string) {
 	const uid = new randomId();
 
 	const id = uid.randomUUID(6).toUpperCase();
@@ -28,12 +26,7 @@ export default async function createMission(
 			return acc;
 		}, []);
 
-	const HoP =
-		interaction.options.getInteger('mission_hop') ??
-		Math.round(
-			honorPoint[rank as keyof typeof honorPoint] /
-				(parseMember.length + 1)
-		);
+	const HoP = interaction.options.getInteger('mission_hop') ?? honorPoint[rank as keyof typeof honorPoint];
 
 	await MissionModel.create({
 		date,
@@ -52,15 +45,13 @@ export default async function createMission(
 		
 **Detail Misi:**
 - **ID:** ${id}
+- **Rank:** ${rank}
 - **Deskripsi:** ${description}
 - **Pencipta Misi:** ${creator}
 - **Honor Point / Peserta:** ${HoP}
+- **Rupion Reward / Peserta:** ${rupionReward[rank as keyof typeof rupionReward]}
 - **Leader:** ${leader}
-- **Member:** ${
-		parseMember.length <= 10
-			? parseMember.join(' | ')
-			: 'Kebanyakan membernya :)'
-	}
+- **Member:** ${parseMember.length <= 10 ? parseMember.join(' | ') : 'Kebanyakan membernya :)'}
 - **Tanggal:** ${date}
 `);
 }

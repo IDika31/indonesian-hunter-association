@@ -1,15 +1,15 @@
 import type { CacheType, Client, Interaction, Message } from 'discord.js';
-import UserHonor from '../../models/Mission.model'
+import UserHonor from '../../models/UserHonor.model';
 
 export default async function (interaction: Interaction<CacheType>) {
-	if (!interaction.isCommand()) return;
+	// if (!interaction.isCommand()) return
 
-	const user = UserHonor.findOne({ userID: interaction.user.id })
+	const user = await UserHonor.findOne({ userId: interaction.user.id });
 
 	if (!user) {
 		await UserHonor.create({
-			userID: interaction.user.id,
-			xp: 0
-		})
+			userId: interaction.user.id,
+			xp: 0,
+		});
 	}
 }
