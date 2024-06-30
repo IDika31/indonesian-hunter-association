@@ -2,8 +2,7 @@ import type { CacheType, Interaction } from 'discord.js';
 import { portalRole } from '../../../utils/portalRole';
 
 export default async function (interaction: Interaction<CacheType>) {
-	if (!interaction.isButton() || interaction.customId !== 'leave-portal')
-		return;
+	if (!interaction.isButton() || interaction.customId !== 'leave-portal') return;
 
 	await interaction.deferUpdate();
 
@@ -11,9 +10,7 @@ export default async function (interaction: Interaction<CacheType>) {
 	const userRoles = user?.roles.cache.map((role) => role.id);
 
 	let responseContent = 'Kamu tidak sedang memasuki portal!';
-	const roleToRemove = portalRole.find((role) =>
-		userRoles?.includes(role.id)
-	);
+	const roleToRemove = portalRole.find((role) => userRoles?.includes(role.id));
 
 	if (roleToRemove) {
 		await user?.roles.remove(roleToRemove.id);
