@@ -3,7 +3,7 @@ import UserHonor from '../../models/UserHonor.model';
 import requirement, { roleId } from '../../../utils/roleRequirement';
 
 export default async function (message: Message<true>, client: Client<true>) {
-	if (message.channelId !== '1256923437310410832') return;
+	// if (message.channelId !== '1256923437310410832') return;
 	let user = await UserHonor.findOne({ userId: message.author.id });
 
 	if (!user) {
@@ -22,8 +22,7 @@ export default async function (message: Message<true>, client: Client<true>) {
 
 	if (!rank) return;
 
-	if (user.xp > rank.requirementToNextRole) {
-        console.log(rank)
+	if (user.xp >= rank.requirementToNextRole) {
 		await userData.roles.add(rank.nextRankRoleId, 'Naik rank');
 		await userData.roles.remove(userRoles, 'Naik rank');
 
